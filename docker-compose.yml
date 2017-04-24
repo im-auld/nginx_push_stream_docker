@@ -1,0 +1,13 @@
+
+version: '2'
+
+services:
+  push-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: pushserver
+    ports:
+     - "9080:9080"
+    # volumes:
+    #  - "/Users/ian/home/repos/push/nginx.conf:/home/ubuntu/nginx.conf"
