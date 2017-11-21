@@ -1,13 +1,8 @@
 
-version: '2'
-
+version: '3'
 services:
   push-server:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: pushserver
+    command: "/usr/local/nginx/sbin/nginx -c /nginx.conf"
+    image: imauld/push:app-0.1.0
     ports:
      - "9080:9080"
-    # volumes:
-    #  - "/Users/ian/home/repos/push/nginx.conf:/home/ubuntu/nginx.conf"

@@ -1,0 +1,51 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+  labels:
+    app: push
+  name: push
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: push
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: push
+    spec:
+      containers:
+      - name: push
+        image:  imauld/push:app-0.2.0
+        imagePullPolicy: IfNotPresent
+        command: 
+          - "/usr/local/nginx/sbin/nginx"
+        args:
+          - "-c"
+          - "/nginx.conf"
+        ports:
+          - containerPort: 9080
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: push
+spec:
+  ports:
+    - name: push
+      port: 9080
+      targetPort: 9080
+  selector:
+    app: push
+  type: NodePort
